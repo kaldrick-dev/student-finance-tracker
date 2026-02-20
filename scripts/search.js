@@ -7,7 +7,7 @@ export function compileRegex(input, flags = "i") {
 }
 
 export function escapeHtml(text) {
-  return text
+  return String(text)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
