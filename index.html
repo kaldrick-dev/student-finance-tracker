@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Finance Tracker</title>
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+      <h1>Student Finance Tracker</h1>
+      <nav aria-label="Main navigation">
+        <ul class="nav-list">
+          <li><a href="#about">About</a></li>
+          <li><a href="#dashboard">Dashboard</a></li>
+          <li><a href="#records">Records</a></li>
+          <li><a href="#form">Add/Edit</a></li>
+          <li><a href="#settings">Settings</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section id="about" aria-labelledby="about-heading" class="panel reveal">
+        <h2 id="about-heading">About</h2>
+        <p>
+          Track student spending with searchable transactions, category
+          insights, and manual multi-currency support.
+        </p>
+        <p>
+          Contact:
+          <a
+            href="https://github.com/kaldrick-dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          |
+          <a href="mailto:a.nzekwe@alustudent.com">a.nzekwe@alustudent.com</a>
+        </p>
+      </section>
+
+      <section
+        id="dashboard"
+        aria-labelledby="dashboard-heading"
+        class="panel reveal"
+      >
+        <h2 id="dashboard-heading">Dashboard</h2>
+        <div class="stats-grid" role="list" aria-label="Financial stats">
+          <article role="listitem" class="stat-card">
+            <h3>Total Records</h3>
+            <p id="stat-total-records">0</p>
+          </article>
+          <article role="listitem" class="stat-card">
+            <h3>Total Amount</h3>
+            <p id="stat-total-amount">0.00</p>
+          </article>
+          <article role="listitem" class="stat-card">
+            <h3>Top Category</h3>
+            <p id="stat-top-category">-</p>
+          </article>
+          <article role="listitem" class="stat-card">
+            <h3>Cap Status</h3>
+            <p id="stat-cap-status">No cap set</p>
+          </article>
+        </div>
+
+        <div class="chart-wrap">
+          <h3>Last 7 Days Trend</h3>
+          <div
+            id="trend-chart"
+            class="trend-chart"
+            role="img"
+            aria-label="Bar chart of spending in the last seven days"
+          ></div>
+        </div>
+        <div
+          id="cap-live"
+          class="sr-only"
+          role="status"
+          aria-live="polite"
+        ></div>
+      </section>
+
+      <section
+        id="records"
+        aria-labelledby="records-heading"
+        class="panel reveal"
+      >
+        <h2 id="records-heading">Records</h2>
+
+        <div class="controls" aria-label="Search and sort controls">
+          <label for="search-pattern">Regex Search</label>
+          <input
+            id="search-pattern"
+            name="search-pattern"
+            type="text"
+            placeholder="e.g. (coffee|tea)"
+          />
+
+          <label class="inline-check" for="search-case-insensitive">
+            <input id="search-case-insensitive" type="checkbox" checked />
+            Ignore case
+          </label>
+
+          <p
+            id="search-error"
+            role="status"
+            aria-live="polite"
+            class="status-msg"
+          ></p>
+
+          <label for="sort-by">Sort By</label>
+          <select id="sort-by" name="sort-by">
+            <option value="date_desc">Date (newest)</option>
+            <option value="date_asc">Date (oldest)</option>
+            <option value="description_asc">Description (A-Z)</option>
+            <option value="description_desc">Description (Z-A)</option>
+            <option value="amount_desc">Amount (high-low)</option>
+            <option value="amount_asc">Amount (low-high)</option>
+          </select>
+        </div>
+
+        <div
+          class="table-wrap desktop-only"
+          tabindex="0"
+          aria-label="Transactions table container"
+        >
+          <table>
+            <caption class="sr-only">
+              Student finance transactions
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Description</th>
+                <th scope="col">Category</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Updated</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="records-table-body"></tbody>
+          </table>
+        </div>
+
+        <div
+          id="records-cards"
+          class="cards mobile-only"
+          aria-label="Transactions cards"
+        ></div>
+      </section>
+
+      <section id="form" aria-labelledby="form-heading" class="panel reveal">
+        <h2 id="form-heading">Add / Edit Transaction</h2>
+        <form id="record-form" novalidate>
+          <input type="hidden" id="record-id" name="record-id" />
+
+          <div class="field">
+            <label for="description">Description</label>
+            <input id="description" name="description" type="text" required />
+            <p
+              id="description-error"
+              class="field-error"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </div>
+
+          <div class="field">
+            <label for="amount">Amount</label>
+            <input
+              id="amount"
+              name="amount"
+              type="text"
+              inputmode="decimal"
+              required
+            />
+            <p
+              id="amount-error"
+              class="field-error"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </div>
+
+          <div class="field">
+            <label for="category">Category</label>
+            <input
+              id="category"
+              name="category"
+              type="text"
+              list="category-list"
+              required
+            />
+            <datalist id="category-list"></datalist>
+            <p
+              id="category-error"
+              class="field-error"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </div>
+
+          <div class="field">
+            <label for="date">Date</label>
+            <input id="date" name="date" type="date" required />
+            <p
+              id="date-error"
+              class="field-error"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="save-record-btn">Save Transaction</button>
+            <button type="button" id="reset-form-btn">Clear</button>
+          </div>
+        </form>
+        <p
+          id="form-status"
+          class="status-msg"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </section>
+
+      <section
+        id="settings"
+        aria-labelledby="settings-heading"
+        class="panel reveal"
+      >
+        <h2 id="settings-heading">Settings</h2>
+
+        <form id="settings-form" novalidate>
+          <fieldset>
+            <legend>Currency</legend>
+
+            <div class="field">
+              <label for="base-currency">Base Currency</label>
+              <select id="base-currency" name="base-currency">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="display-currency">Display Currency</label>
+              <select id="display-currency" name="display-currency">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="rate-usd">Rate: 1 base in USD</label>
+              <input id="rate-usd" type="text" inputmode="decimal" />
+            </div>
+
+            <div class="field">
+              <label for="rate-eur">Rate: 1 base in EUR</label>
+              <input id="rate-eur" type="text" inputmode="decimal" />
+            </div>
+
+            <div class="field">
+              <label for="rate-gbp">Rate: 1 base in GBP</label>
+              <input id="rate-gbp" type="text" inputmode="decimal" />
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Budget Cap</legend>
+            <div class="field">
+              <label for="cap-amount">Cap Amount (base currency)</label>
+              <input
+                id="cap-amount"
+                type="text"
+                inputmode="decimal"
+                placeholder="e.g. 500"
+              />
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Categories</legend>
+            <div class="field">
+              <label for="categories-input">Comma-separated categories</label>
+              <input id="categories-input" type="text" />
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button type="submit">Save Settings</button>
+          </div>
+        </form>
+
+        <div class="settings-actions">
+          <button id="export-json-btn" type="button">Export JSON</button>
+          <label for="import-json-input" class="file-label">Import JSON</label>
+          <input
+            id="import-json-input"
+            type="file"
+            accept="application/json"
+            tabindex="-1"
+          />
+        </div>
+        <p
+          id="settings-status"
+          class="status-msg"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Student Finance Tracker</p>
+    </footer>
+
+    <script type="module" src="scripts/app.js"></script>
+  </body>
+</html>
