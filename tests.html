@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regex/Validation Tests</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 1rem; }
+    .ok { color: green; }
+    .fail { color: red; }
+    h2 { margin-top: 1.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Validation Tests</h1>
+
+  <h2>Description Validation</h2>
+  <ul id="desc-results"></ul>
+
+  <h2>Amount Validation</h2>
+  <ul id="amount-results"></ul>
+
+  <h2>Date Validation</h2>
+  <ul id="date-results"></ul>
+
+  <h2>Category Validation</h2>
+  <ul id="cat-results"></ul>
+
+  <h2>Regex Compiler</h2>
+  <ul id="regex-results"></ul>
+
+  <script type="module">
+    import { validateDescription, validateAmount, validateDate, validateCategory } from './scripts/validators.js';
+    import { compileRegex } from './scripts/search.js';
+
+    function runSuite(targetId, tests) {
+      const ul = document.getElementById(targetId);
+      tests.forEach(([name, pass]) => {
+        const li = document.createElement('li');
+        li.className = pass ? 'ok' : 'fail';
+        li.textContent = `${pass ? 'PASS' : 'FAIL'}: ${name}`;
+        ul.appendChild(li);
+      });
+    }
+
+    // Description tests
+    runSuite('desc-results', [
+      ["Valid simple description", validateDescription("Coffee with friends").valid === true],
+      ["Valid single word", validateDescription("Lunch").valid === true],
+      ["Rejects duplicate consecutive words", validateDescription("coffee coffee").valid === false],
+      ["Rejects leading spaces", validateDescription("  hello").valid === false],
+      ["Rejects trailing spaces", validateDescription("hello  ").valid === false],
+      ["Rejects empty string", validateDescription("").valid === false],
+      ["Rejects only spaces", validateDescription("   ").valid === false],
+      ["Collapses double spaces then passes", validateDescription("hello  world").valid === true],
+      ["Hyphenated description passes", validateDescription("Art-supply kit from second-hand store").valid === true],
+    ]);
+
+    // Amount tests
+    runSuite('amount-results', [
+      ["Integer passes", validateAmount("10").valid === true],
+      ["Decimal with two places passes", validateAmount("12.50").valid === true],
+      ["Zero passes", validateAmount("0").valid === true],
+      ["Zero with decimals passes", validateAmount("0.99").valid === true],
+      ["Leading zero integer fails", validateAmount("01.50").valid === false],
+      ["Three decimal places fails", validateAmount("10.123").valid === false],
+      ["Negative number fails", validateAmount("-5").valid === false],
+      ["Empty string fails", validateAmount("").valid === false],
+      ["Letters fail", validateAmount("abc").valid === false],
+      ["Large number passes", validateAmount("9999.99").valid === true],
+    ]);
+
+    // Date tests
+    runSuite('date-results', [
+      ["Valid date passes", validateDate("2025-09-29").valid === true],
+      ["January 1st passes", validateDate("2025-01-01").valid === true],
+      ["December 31st passes", validateDate("2025-12-31").valid === true],
+      ["Month 13 fails", validateDate("2025-13-29").valid === false],
+      ["Day 00 fails", validateDate("2025-09-00").valid === false],
+      ["Day 32 fails", validateDate("2025-09-32").valid === false],
+      ["Missing leading zero fails", validateDate("2025-9-29").valid === false],
+      ["Empty string fails", validateDate("").valid === false],
+      ["Slash format fails", validateDate("2025/09/29").valid === false],
+    ]);
+
+    // Category tests
+    runSuite('cat-results', [
+      ["Single word passes", validateCategory("Food").valid === true],
+      ["Two words passes", validateCategory("Bus Pass").valid === true],
+      ["Hyphenated passes", validateCategory("Book-Store").valid === true],
+      ["Number fails", validateCategory("Fees 2").valid === false],
+      ["Leading space fails", validateCategory(" Food").valid === false],
+      ["Empty string fails", validateCategory("").valid === false],
+      ["Special chars fail", validateCategory("Food & Drink").valid === false],
+      ["Multi-hyphen passes", validateCategory("On-Campus Food-Court").valid === true],
+    ]);
+
+    // Regex compiler tests
+    runSuite('regex-results', [
+      ["Duplicate word regex compiles", compileRegex(String.raw`\b(\w+)\s+\1\b`, "i") instanceof RegExp],
+      ["Cents regex compiles", compileRegex(String.raw`\.\d{2}\b`, "") instanceof RegExp],
+      ["Beverage keyword compiles", compileRegex("(coffee|tea)", "i") instanceof RegExp],
+      ["Invalid regex returns null", compileRegex("(", "") === null],
+      ["Empty string returns null", compileRegex("", "i") === null],
+      ["Case insensitive flag works", compileRegex("test", "i").flags.includes("i") === true],
+    ]);
+  </script>
+</body>
+</html>
