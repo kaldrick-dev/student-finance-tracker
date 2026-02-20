@@ -1,0 +1,119 @@
+[
+  {
+    "id": "txn_0001",
+    "description": "Lunch at cafeteria",
+    "amount": 12.5,
+    "category": "Food",
+    "date": "2025-09-25",
+    "createdAt": "2025-09-25T10:00:00.000Z",
+    "updatedAt": "2025-09-25T10:00:00.000Z"
+  },
+  {
+    "id": "txn_0002",
+    "description": "Chemistry textbook",
+    "amount": 89.99,
+    "category": "Books",
+    "date": "2025-09-23",
+    "createdAt": "2025-09-23T12:30:00.000Z",
+    "updatedAt": "2025-09-23T12:30:00.000Z"
+  },
+  {
+    "id": "txn_0003",
+    "description": "Bus pass",
+    "amount": 45,
+    "category": "Transport",
+    "date": "2025-09-20",
+    "createdAt": "2025-09-20T08:00:00.000Z",
+    "updatedAt": "2025-09-20T08:00:00.000Z"
+  },
+  {
+    "id": "txn_0004",
+    "description": "Coffee with friends",
+    "amount": 8.75,
+    "category": "Entertainment",
+    "date": "2025-09-28",
+    "createdAt": "2025-09-28T14:00:00.000Z",
+    "updatedAt": "2025-09-28T14:00:00.000Z"
+  },
+  {
+    "id": "txn_0005",
+    "description": "Lab fees",
+    "amount": 120,
+    "category": "Fees",
+    "date": "2025-09-01",
+    "createdAt": "2025-09-01T09:15:00.000Z",
+    "updatedAt": "2025-09-01T09:15:00.000Z"
+  },
+  {
+    "id": "txn_0006",
+    "description": "Late night snack",
+    "amount": 3.2,
+    "category": "Food",
+    "date": "2025-09-30",
+    "createdAt": "2025-09-30T22:40:00.000Z",
+    "updatedAt": "2025-09-30T22:40:00.000Z"
+  },
+  {
+    "id": "txn_0007",
+    "description": "Stationery pack",
+    "amount": 0.99,
+    "category": "Books",
+    "date": "2025-08-31",
+    "createdAt": "2025-08-31T11:00:00.000Z",
+    "updatedAt": "2025-08-31T11:00:00.000Z"
+  },
+  {
+    "id": "txn_0008",
+    "description": "Weekend movie",
+    "amount": 15,
+    "category": "Entertainment",
+    "date": "2025-09-14",
+    "createdAt": "2025-09-14T19:00:00.000Z",
+    "updatedAt": "2025-09-14T19:00:00.000Z"
+  },
+  {
+    "id": "txn_0009",
+    "description": "Metro reload",
+    "amount": 25,
+    "category": "Transport",
+    "date": "2025-09-10",
+    "createdAt": "2025-09-10T07:45:00.000Z",
+    "updatedAt": "2025-09-10T07:45:00.000Z"
+  },
+  {
+    "id": "txn_0010",
+    "description": "Club membership",
+    "amount": 250,
+    "category": "Other",
+    "date": "2025-10-01",
+    "createdAt": "2025-10-01T13:00:00.000Z",
+    "updatedAt": "2025-10-01T13:00:00.000Z"
+  },
+  {
+    "id": "txn_0011",
+    "description": "Free campus event ticket",
+    "amount": 0,
+    "category": "Entertainment",
+    "date": "2025-01-01",
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "txn_0012",
+    "description": "Full-year tuition deposit",
+    "amount": 9999.99,
+    "category": "Fees",
+    "date": "2025-12-31",
+    "createdAt": "2025-12-31T23:59:00.000Z",
+    "updatedAt": "2025-12-31T23:59:00.000Z"
+  },
+  {
+    "id": "txn_0013",
+    "description": "Art-supply kit from second-hand store",
+    "amount": 4.01,
+    "category": "Books",
+    "date": "2025-02-28",
+    "createdAt": "2025-02-28T15:30:00.000Z",
+    "updatedAt": "2025-02-28T15:30:00.000Z"
+  }
+]
