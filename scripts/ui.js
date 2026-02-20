@@ -20,7 +20,12 @@ import {
   validateDate,
   validateRecordShape,
 } from "./validators.js";
-import { compileRegex, highlight, matchesRecord, escapeHtml } from "./search.js";
+import {
+  compileRegex,
+  highlight,
+  matchesRecord,
+  escapeHtml,
+} from "./search.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -124,7 +129,9 @@ function renderCategories() {
   const { categories } = getState().settings;
   setHtml(
     "category-list",
-    categories.map((c) => `<option value="${escapeHtml(c)}"></option>`).join("")
+    categories
+      .map((c) => `<option value="${escapeHtml(c)}"></option>`)
+      .join(""),
   );
 }
 
@@ -152,7 +159,10 @@ function renderStats() {
   if (cap > 0) {
     const remaining = cap - sum;
     if (remaining >= 0) {
-      setText("stat-cap-status", `${formatCurrency(remaining, settings)} remaining`);
+      setText(
+        "stat-cap-status",
+        `${formatCurrency(remaining, settings)} remaining`,
+      );
       capLive.setAttribute("aria-live", "polite");
       capLive.textContent = `You are under cap by ${formatCurrency(remaining, settings)}.`;
     } else {
@@ -185,14 +195,16 @@ function renderTrendChart() {
   const totals = days.map((date) =>
     records
       .filter((r) => r.date === date)
-      .reduce((acc, r) => acc + convertAmount(r.amount, settings), 0)
+      .reduce((acc, r) => acc + convertAmount(r.amount, settings), 0),
   );
 
   const peak = Math.max(1, ...totals);
   const bars = totals
     .map((val, i) => {
       const pct = Math.round((val / peak) * 100);
-      const label = new Date(days[i]).toLocaleDateString(undefined, { weekday: "short" });
+      const label = new Date(days[i]).toLocaleDateString(undefined, {
+        weekday: "short",
+      });
       return `<div class="bar" data-day="${label}" style="height:${Math.max(8, pct)}%" title="${label}: ${val.toFixed(2)}"></div>`;
     })
     .join("");
@@ -217,7 +229,7 @@ function renderTableAndCards() {
             <button class="small secondary" data-action="edit-form" data-id="${r.id}">Edit</button>
             <button class="small danger" data-action="delete" data-id="${r.id}">Delete</button>
           </td>
-        </tr>`
+        </tr>`,
     )
     .join("");
 
@@ -234,11 +246,14 @@ function renderTableAndCards() {
           <button class="small secondary" data-action="edit-form" data-id="${r.id}">Edit</button>
           <button class="small danger" data-action="delete" data-id="${r.id}">Delete</button>
         </div>
-      </article>`
+      </article>`,
     )
     .join("");
 
-  setHtml("records-table-body", rows || '<tr><td colspan="6">No records found.</td></tr>');
+  setHtml(
+    "records-table-body",
+    rows || '<tr><td colspan="6">No records found.</td></tr>',
+  );
   setHtml("records-cards", cards || "<p>No records found.</p>");
 }
 
@@ -281,7 +296,11 @@ function handleSettingsSubmit(e) {
   const eur = validateAmount($("rate-eur").value || "1");
   const gbp = validateAmount($("rate-gbp").value || "1");
   if (!usd.valid || !eur.valid || !gbp.valid) {
-    showStatus("settings-status", "All currency rates must be valid numbers.", true);
+    showStatus(
+      "settings-status",
+      "All currency rates must be valid numbers.",
+      true,
+    );
     return;
   }
 
@@ -339,7 +358,8 @@ function handleImport(e) {
     try {
       const parsed = JSON.parse(String(reader.result));
       if (!Array.isArray(parsed)) throw new Error("JSON must be an array.");
-      if (!parsed.every(validateRecordShape)) throw new Error("One or more records are invalid.");
+      if (!parsed.every(validateRecordShape))
+        throw new Error("One or more records are invalid.");
 
       replaceRecords(parsed);
       showStatus("settings-status", `Imported ${parsed.length} records.`);
