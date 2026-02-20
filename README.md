@@ -9,7 +9,7 @@ Student Finance Tracker (Summative Assignment)
 - App: `index.html`
 - Validation tests: `tests.html`
 - GitHub Pages: https://kaldrick-dev.github.io/student-finance-tracker/
-- Demo Video: <!-- TODO: Replace with your unlisted demo video link -->
+- Demo Video: https://youtu.be/P3iWmaYvkpA
 
 ## Features
 
